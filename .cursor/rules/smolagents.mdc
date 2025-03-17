@@ -1,0 +1,36 @@
+---
+description: Guidelines for Smolagents Usage
+globs: *.py
+---
+# Smolagents Project Guidelines
+
+**Overview:**  
+This project uses the smolagents library (>=v1.8.0) to build multi‑step AI agents. Follow these guidelines to ensure correct and secure usage:
+
+- **Agent Choice:**  
+  - Prefer using **`CodeAgent`** for flexible multi‑step reasoning.
+  - Use **`ToolCallingAgent`** when structured, JSON‑formatted tool calls are needed.
+  - **Do not use the deprecated `ManagedAgent`**; instead, add sub‑agents by giving them a `name` and `description` and including them via the `managed_agents` parameter.
+
+- **Model Setup:**  
+  - When using model wrappers (e.g., `HfApiModel` or `LiteLLMModel`), ensure that required API keys are set.
+  - **Using LiteLLM with OpenRouter:**  
+    - Pass the API key explicitly via the `api_key` parameter.
+    - Specify the model ID with an `"openrouter/"` prefix.  
+      **Example:**
+      ```python
+      from smolagents import LiteLLMModel
+      model = LiteLLMModel("openrouter/openai/gpt-3.5-turbo", api_key="your_openrouter_api_key_here")
+      ```
+- **Tool Usage:**  
+  - Define clear `name` and `description` for every custom tool.
+  - Use built‑in tools (like `DuckDuckGoSearchTool` or `PythonInterpreterTool`) when possible.
+  
+- **Multi-Agent Coordination:**  
+  - When delegating tasks to sub‑agents, ensure each has a unique `name` and a concise `description`.
+
+- **Logging & Debugging:**  
+  - Use `agent.logs` to inspect each reasoning step if issues arise.
+  - Ensure code execution remains sandboxed by allowing only necessary modules.
+
+  Additional smolagents documentation is available in [smolagents.md](mdc:docs/smolagents.md)
